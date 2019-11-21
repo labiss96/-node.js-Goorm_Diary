@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Goorm Diary</title>
-</head>
+<% include ./templates/head.ejs %>
 <body>
-    <p>title = <%= post.title %></p>
-    <p>body = <%= post.body %></p>
+    <% include ./templates/header.ejs %>
+    <div class = "container">
+        <a href="/tobacco/create">구름 추가</a>
+        <p>Cigaretts list</p>
+        <div class = "row">
+            <% for(let tobacco of tobacco_list) { %>
+            <div class = "col-md-2">
+                <div class="card bg-light mb-3" style="width: 11rem;">
+                    <a href="/tobacco/detail/<%= tobacco.tobacco_id %>">
+                        <img src="./images/Marlboro_Logo.png" class="card-img-top" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= tobacco.brand %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= tobacco.name %></h6>
+                    </div>
+                </div>
+            </div>    
+            <% } %> 
+        </div>
+
+    </div>
+    
 </body>
 </html>
+
+<style>
+
+.wrapper {
+    display: grid;
+}
+</style>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../templates/head.ejs %>
+<body>
+    <% include ../templates/header.ejs %>
+    <div class="container">
+        <p>담배 제품 추가</p>
+        <form action="/tobacco/create" method="POST">
+            <div>
+                <label for="brand">brand</label>
+                <input type="text" name="brand" value="">
+              </div>
+              <div>
+                  <label for="name">name</label>
+                  <input type="text" name="name" value="">
+                </div>
+              <div>
+                <label for="price">price</label>
+                <input type="number" name="price" value="">
+              </div>
+              <div>
+                <label for="nicotine">nicotine</label>
+                <input type="text" name="nicotine" value="">
+              </div>
+              <div>
+                <label for="TAR">TAR</label>
+                <input type="text" name="TAR" value="">
+              </div>
+              <div>
+                <label for="is_menthol">맨솔 여부</label>
+                <input type="radio" name="is_menthol" value=true /> 유
+                <input type="radio" name="is_menthol" value=false /> 무
+              </div>
+              <div>
+                <button type="submit">Submit</button>
+              </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "development": {
+        "username" : "root",
+        "password" : "coke9080!",
+        "host" : "localhost",
+        "database" : "goorm",
+        "dialect" : "mysql",
+        "operatorAliases" : false
+    }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../templates/head.ejs %>
+<body>
+    <% include ../templates/header.ejs %>
+    <div class="container">
+        <p>구름정보 수정</p>
+        <form action="/tobacco/update/<%= tobacco_info.tobacco_id %>" method="POST">
+            <div>
+                <label for="brand">brand</label>
+                <input type="text" name="brand" value="<%= tobacco_info.brand %>">
+              </div>
+              <div>
+                  <label for="name">name</label>
+                  <input type="text" name="name" value="<%= tobacco_info.name %>">
+                </div>
+              <div>
+                <label for="price">price</label>
+                <input type="number" name="price" value="<%= tobacco_info.price %>">
+              </div>
+              <div>
+                <label for="nicotine">nicotine</label>
+                <input type="text" name="nicotine" value="<%= tobacco_info.nicotine %>">
+              </div>
+              <div>
+                <label for="TAR">TAR</label>
+                <input type="text" name="TAR" value="<%= tobacco_info.TAR %>">
+              </div>
+              <div>
+                <label for="is_menthol">맨솔 여부</label>
+                <% if(tobacco_info.is_menthol == true) { %>
+                <input type="radio" name="is_menthol" value=true checked="checked"/> 유
+                <input type="radio" name="is_menthol" value=false /> 무
+                <% } else { %>
+                <input type="radio" name="is_menthol" value=true /> 유
+                <input type="radio" name="is_menthol" value=false checked="checked"/> 무
+                <% } %>
+              </div>
+              <div>
+                <button type="submit">Submit</button>
+              </div>
+        </form>
+    </div>
+</body>
+</html>
