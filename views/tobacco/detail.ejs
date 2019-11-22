@@ -22,6 +22,47 @@
     <form action="/tobacco/delete/<%= tobacco_info.tobacco_id %>" method="POST">
         <button type="submit">Delete</button>
     </form>
+
+    <hr>
+    <h2>Review</h2>
+    <% reviews.forEach(function(review){ %>
+        작성자 : <%= review.writer %> <br>
+        타격감 : <%= review.feel_of_hit %> <br>
+        평점 : <%= review.score %> <br>
+        내용 : <%= review.comment %>
+        <hr>
+    <% }) %>
+
+    <details>
+        <summary>리뷰 작성</summary>
+        <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/create_review" method="post">
+            <div>
+                <label for="writer">작성자</label>
+                <input type="text"  name="review_writer" value="" required='required'>
+            </div>
+            <div>
+                <label for="feel_of_hit">타격감</label>
+                <input type="radio" name="review_feel_of_hit" value='상' />상
+                <input type="radio" name="review_feel_of_hit" value='중' />중
+                <input type="radio" name="review_feel_of_hit" value='하' />하
+            </div>
+            <div>
+                <label for="score">평점</label>
+                <input type="radio" name="review_score" value='1' />1
+                <input type="radio" name="review_score" value='2' />2
+                <input type="radio" name="review_score" value='3' />3
+                <input type="radio" name="review_score" value='4' />4
+                <input type="radio" name="review_score" value='5' />5
+            </div>
+            <div>
+                <label for="comment">내용</label>
+                <input type="text"  name="review_comment" value="" required='required'>
+            </div>    
+            
+            <button type="submit">등록</button>
+        </form>
+    </details>
+    <hr>
 </div>
 </body>
 </html>

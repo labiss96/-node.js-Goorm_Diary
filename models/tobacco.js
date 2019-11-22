@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             unique : false,
         },
         feel_of_hit: {
-            type : DataTypes.INTEGER,
+            type : DataTypes.STRING(10),
             allowNull : false,
             unique : false,
-            defaultValue: 0
+            defaultValue: '데이터 없음'
         },
         is_menthol: {
             type : DataTypes.BOOLEAN,
