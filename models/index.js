@@ -12,10 +12,12 @@ db.Sequelize = Sequelize;
 
 db.Tobacco = require('./tobacco')(sequelize, Sequelize);
 db.Review = require('./review')(sequelize, Sequelize);
+db.User = require('./user')(sequelize, Sequelize);
 
 
 //관계 설정
 db.Tobacco.hasMany(db.Review,{foreignKey:'tobacco_id', onDelete: 'cascade'})
+db.User.hasMany(db.Tobacco,{foreignKey:'user_id', onDelete: 'cascade'})
 
 // db.Admin = require('./admin')(sequelize, Sequelize);
 // db.Seller = require('./seller')(sequelize, Sequelize);

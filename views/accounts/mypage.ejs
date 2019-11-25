@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../templates/head.ejs %>
+</head>
+<body>
+    <% include ../templates/header.ejs %>
+
+    <div class="container">
+        <br>
+        <p><%= user_info.username %></p>
+        <p><%= user_info.email %></p>
+        
+    <details>
+        <summary>Add my favorite</summary>
+        <form action="">
+            <div>
+                <label for="tobacco_name">tobacco</label>
+                <select name="tobacco_name" id="">
+                    <% for(tobacco of tobacco_list) { %>
+                    <option value="<%= tobacco.tobacco_id %>"><%= tobacco.brand %><%= tobacco.name %></option>
+                    <%}%>
+                </select>
+            </div>
+            
+            <button type="submit">Add</button>
+        </form>
+    </details>
+
+    </div>    
+
+    
+
+</body>
+</html>
+

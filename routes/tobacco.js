@@ -2,11 +2,38 @@ var express = require('express');
 var router = express.Router();
 var {Tobacco} = require('../models');
 var {Review} = require('../models');
+var {User} = require('../models');
+router.get('/list', async(req, res)=> {
+    var tobacco_list = await Tobacco.findAll();
+    var brand_list = [];
+    var collapse = [];
+    var session = req.session;
+    for(var i = 0; i < tobacco_list.length; ++i) {
+        brand_list.push(tobacco_list[i].brand);
+    }
+    brands = new Set(brand_list);
+
+    for(var m=0; m < brands.length; ++m) {
+        for(var n = 0; n < tobacco_list.length; ++n) {
+            if(brands[m] == tobacco_list[n].brand) {
+                brands[m].push(tobacco_list[n]);
+            }
+        }
+    }
+
+    res.render('./tobacco/list.ejs', {'tobacco_list':tobacco_list, 'brands':brands, "session":session}); 
+});
+
+// router.get('/list/:id', async(req, res)=> {
+    
+//     res.render('./tobacco/create.ejs', {'brands' : brands}); 
+// });
 
 //detail
 router.get('/detail/:id', async (req, res) => {
     var tobacco_id = req.params.id;
     var reviews = [];
+    var session = req.session;
 
     // 해당 구름과자의 타격감 및 별점 계산
     var hit = {'상':0,'중':0,'하':0};
@@ -72,35 +99,54 @@ router.get('/detail/:id', async (req, res) => {
     });
     
 
-    //해당 음식점의 리뷰를 가져옴.
-    var review_info = await tobacco_info.getReviews();
+    //리뷰
+    //var review_info = await tobacco_info.getReviews();
+
+    var review_info = review_list;
 
     for(var i = 0; i < review_info.length; i++) {
+        var writer_info = await User.findOne({
+            where : {id : review_info[i].dataValues.writer}
+        }).catch((err)=>{
+            console.log(err);
+        })
         var info = {
-            writer : review_info[i].dataValues.writer,
+            writer : writer_info.username,
             comment : review_info[i].dataValues.comment,
             feel_of_hit : review_info[i].dataValues.feel_of_hit,
             score : review_info[i].dataValues.score
         };
         reviews.push(info);
     }
-
     
 
-    res.render('./tobacco/detail.ejs', {'tobacco_info': tobacco_info, 'reviews':reviews});
+    res.render('./tobacco/detail.ejs', {'tobacco_info': tobacco_info, 'reviews':reviews, "session":session});
 });
 
 //create
-router.get('/create', (req, res) => {
-    res.render('./tobacco/create.ejs'); 
+router.get('/create', async (req, res) => {
+    var tobacco_list = await Tobacco.findAll();
+    var brand_list = [];
+    var session = req.session;
+    for(var i = 0; i < tobacco_list.length; ++i) {
+        brand_list.push(tobacco_list[i].brand);
+    }
+    brands = new Set(brand_list);
+    res.render('./tobacco/create.ejs', {'brands' : brands, "session":session}); 
 });
 
 //create_process
 router.post('/create', async (req, res) => {
     var data = req.body;
+    var brand;
+    if (data.brand_select == "null") {
+        brand = data.brand_name;
+    } else {
+        brand = data.brand_select;
+    }
     try{
         await Tobacco.create({
-            brand : data.brand,
+            brand : brand,
             name : data.name,
             price : data.price,
             nicotine : data.nicotine,
@@ -112,15 +158,17 @@ router.post('/create', async (req, res) => {
     }
     res.redirect('/');
 });
+
 //update
 router.get('/update/:id', async (req, res) => {
+    var session = req.session;
     var tobacco_id = req.params.id;
     var tobacco_info = await Tobacco.findOne({
         where : {tobacco_id : tobacco_id}
     }).catch((err) =>{
         console.log(err);
     })
-    res.render('./tobacco/update.ejs', {'tobacco_info': tobacco_info});
+    res.render('./tobacco/update.ejs', {'tobacco_info': tobacco_info, "session":session});
 });
 //update_process
 router.post('/update/:id', async (req, res) => {
@@ -159,8 +207,9 @@ router.post('/delete/:id', async (req, res) => {
 router.post("/detail/:id/create_review", async function(req, res){
     var tobacco_id= req.params.id;
     var review_data = req.body;
+    var session = req.session;
     await Review.create({
-        writer : review_data.review_writer,
+        writer : session.user_id,
         feel_of_hit : review_data.review_feel_of_hit,
         score : review_data.review_score,
         comment : review_data.review_comment,
@@ -174,10 +223,6 @@ router.post("/detail/:id/create_review", async function(req, res){
     }).catch(function(err){
         console.log(err);
     });
-
-
-
-    
 
     res.redirect('/tobacco/detail/'+tobacco_id);
 });

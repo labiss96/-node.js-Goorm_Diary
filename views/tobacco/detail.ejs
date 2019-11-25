@@ -7,7 +7,7 @@
 <% include ../templates/header.ejs %>
 <div class="container">
         <h1>Detail page</h1>
-    <img src="./images/Marlboro_Logo.png" class="" alt="">
+    <img src="../images/Marlboro_Logo.png" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
     <hr>
     <h4><%= tobacco_info.brand %> <%= tobacco_info.name %></h4><br>
     <p>가격 : <%= tobacco_info.price %></p>
@@ -33,12 +33,13 @@
         <hr>
     <% }) %>
 
+    <% if (session.login) {%>
     <details>
         <summary>리뷰 작성</summary>
         <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/create_review" method="post">
             <div>
                 <label for="writer">작성자</label>
-                <input type="text"  name="review_writer" value="" required='required'>
+                <span><%= session.username %></span>
             </div>
             <div>
                 <label for="feel_of_hit">타격감</label>
@@ -62,6 +63,7 @@
             <button type="submit">등록</button>
         </form>
     </details>
+    <% } %>
     <hr>
 </div>
 </body>

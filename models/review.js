@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             unique : true,
         },
         writer : {
-            type: DataTypes.STRING(20),
+            type: DataTypes.INTEGER,
             allowNull : false,
         },
         comment : {

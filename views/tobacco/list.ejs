@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<% include ../templates/head.ejs %>
+</head>
+<body>
+<% include ../templates/header.ejs %>
+<div class="container">
+    <!-- <div class = "row">
+        <% for(let brand of brands) { %>
+        <div class="" style=" text-align:center !important;">
+            <button type="button" class="btn btn-outline-secondary"><%= brand %></button>
+        </div>
+        <% } %>
+    </div> -->
+    <br>
+    <h2>Goorm List</h2>
+    <hr>
+
+    <div class="accordion" id="accordionExample">
+        <% for(let brand of brands) { %>
+            <div class="card">
+                <div class="card-header" id="heading<%= brand %>">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<%= brand %>" aria-expanded="true" aria-controls="collapse<%= brand %>">
+                        <%= brand %>
+                    </button>
+                </h2>
+                </div>
+                <div id="collapse<%= brand %>" class="collapse show" aria-labelledby="heading<%= brand %>" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class = "row">
+                            <% for(let tobacco of tobacco_list) {%>
+                                <% if (brand == tobacco.brand) {%>
+                                    <div class = "col-md-2">
+                                        <div class="card bg-light mb-3" style="width: 11rem;">
+                                            <a href="/tobacco/detail/<%= tobacco.tobacco_id %>">
+                                                <img src="../images/Marlboro_Logo.png" class="card-img-top" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 class="card-title"><%= tobacco.brand %></h5>
+                                                <h6 class="card-subtitle mb-2 text-muted"><%= tobacco.name %></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                <% } %>                    
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    
+</div>
+</body>
+</html>

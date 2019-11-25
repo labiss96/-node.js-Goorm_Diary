@@ -2,9 +2,8 @@
 <html lang="en">
 <% include ./templates/head.ejs %>
 <body>
-    <% include ./templates/header.ejs %>
+<% include ./templates/header.ejs %>
     <div class = "container">
-        <a href="/tobacco/create">구름 추가</a>
         <p>Cigaretts list</p>
         <div class = "row">
             <% for(let tobacco of tobacco_list) { %>
@@ -21,15 +20,8 @@
             </div>    
             <% } %> 
         </div>
-
+        
     </div>
     
 </body>
 </html>
-
-<style>
-
-.wrapper {
-    display: grid;
-}
-</style>
