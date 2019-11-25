@@ -104,7 +104,7 @@ router.get('/detail/:id', async (req, res) => {
             where : {id : review_info[i].dataValues.writer}
         }).catch((err)=>{
             console.log(err);
-        })
+        });
         var info = {
             writer : writer_info.username,
             comment : review_info[i].dataValues.comment,
@@ -231,6 +231,7 @@ router.post("/detail/:id/create_review", async function(req, res){
     var review_data = req.body;
     var session = req.session;
     await Review.create({
+        tobacco_id : tobacco_id,
         writer : session.user_id,
         feel_of_hit : review_data.review_feel_of_hit,
         score : review_data.review_score,

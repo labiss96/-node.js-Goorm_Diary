@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull : false,
             unique : true,
         },
+        tobacco_id : {
+            type: DataTypes.INTEGER,
+            allowNull : false,
+        },
         writer : {
             type: DataTypes.INTEGER,
             allowNull : false,

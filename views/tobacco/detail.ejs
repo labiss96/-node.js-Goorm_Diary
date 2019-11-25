@@ -2,51 +2,94 @@
 <html lang="en">
 <head>
 <% include ../templates/head.ejs %>
+<script>
+    function removeAlert() {
+        alert("정상적으로 삭제되었습니다!");
+}
+</script>
+
 </head>
 <body>
 <% include ../templates/header.ejs %>
 <div class="container">
-        <h1>Detail page</h1>
-    <img src="../images/Marlboro_Logo.png" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
-    <hr>
-    <h4><%= tobacco_info.brand %> <%= tobacco_info.name %></h4><br>
-    <p>가격 : <%= tobacco_info.price %></p>
-    <p>니코틴 함량 : <%= tobacco_info.nicotine %></p>
-    <p>타르 함량 : <%= tobacco_info.TAR %></p>
-    <p>타격감 : <%= tobacco_info.feel_of_hit %></p>
-    <p>맨솔 여부 : <%= tobacco_info.is_menthol %></p>
+    <img src="/images/<%= tobacco_info.brand %>.png" alt="" style='width:150px; height: 150px; display:block; margin:10px; text-align: center;'>
+    <table>
+        <br>
+        <h4><%= tobacco_info.brand %> <%= tobacco_info.name %></h4>
+        <tr>
+            <td>가격</td>
+            <td><%= tobacco_info.price %></td>
+        </tr>
+        <tr>
+            <td>니코틴 함량</td>
+            <td><%= tobacco_info.nicotine %></td>
+        </tr>
+        <tr>
+            <td>타르 함량</td>
+            <td><%= tobacco_info.TAR %></td>
+        </tr>
+        <tr>
+            <td>타격감</td>
+            <td><%= tobacco_info.feel_of_hit %></td>
+        </tr>
+        <tr>
+            <td>맨솔 유무</td>
+            <td><%= tobacco_info.is_menthol %></td>
+        </tr>
+        <tr>
+            <td>Score</td>
+            <th>
+                <span>★</span>
+                <% for(var score_inx = 0; score_inx < tobacco_info.score-1; ++score_inx) {%>    
+                    <span>★</span>
+                <% } %>
+            </th>
+        </tr>
+    </table>
     <br>
-    <p>별 점
-        <span>★</span>
-        <% for(var score_inx = 0; score_inx < tobacco_info.score-1; ++score_inx) {%>    
-            <span>★</span>
-        <% } %>
-    </p>
-    <hr>
-    <a href="/tobacco/update/<%= tobacco_info.tobacco_id %>">Update</a>
-    <form action="/tobacco/delete/<%= tobacco_info.tobacco_id %>" method="POST">
-        <button type="submit" class="btn btn-light">Delete</button>
-    </form>
-
-    <% if (session.login) {%>
-        <% if (is_favorite){ %>
-            <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/remove_favorite" method="post">
-                <button type="submit" class="btn btn-light">remove Favorite</button>
-            </form>
-        <%} else {%>
-            <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/add_favorite" method="post">
-                <button type="submit" class="btn btn-light">Add Favorite</button>
-            </form>
-        <%}%>
+    <% if(session.login) { %>
+    <p class="detail_btn">
+        <a href="/tobacco/update/<%= tobacco_info.tobacco_id %>" class="btn btn-light" >Update</a>
+        <form action="/tobacco/delete/<%= tobacco_info.tobacco_id %>" name="delete_form" method="POST">
+            <button type="submit" class="btn btn-light" onclick="removeAlert()">Delete</button>
+        </form>
+    </p> 
+    <hr>   
+    <% if (is_favorite){ %>
+        <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/remove_favorite" method="post">
+            <button type="submit" class="btn btn-secondary">remove Favorite</button>
+        </form>
+    <%} else {%>
+        <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/add_favorite" method="post">
+            <button type="submit" class="btn btn-danger">Add Favorite</button>
+        </form>
+    <%}%>
+    
     <% } %>
 
     <hr>
-    <h2>Review</h2>
+    <h4>Review</h4>
+    <br>
     <% reviews.forEach(function(review){ %>
-        작성자 : <%= review.writer %> <br>
-        타격감 : <%= review.feel_of_hit %> <br>
-        평점 : <%= review.score %> <br>
-        내용 : <%= review.comment %>
+        <h6>[ <%= review.writer %> ]</h6>
+        <table>
+            <tr>
+                <td>타격감</td>
+                <td><%= review.feel_of_hit %></td>
+            </tr>
+            <tr>
+                <td>평점</td>
+                <td>
+                    <span>★</span>
+                    <% for(var idx = 0; idx < review.score-1; ++idx) {%>    
+                        <span>★</span>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                 <td><%= review.comment %></td>
+            </tr>
+        </table>
         <hr>
     <% }) %>
 
