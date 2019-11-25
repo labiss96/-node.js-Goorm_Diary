@@ -16,12 +16,29 @@
     <p>타격감 : <%= tobacco_info.feel_of_hit %></p>
     <p>맨솔 여부 : <%= tobacco_info.is_menthol %></p>
     <br>
-    <p>별 점 : <%= tobacco_info.score %></p>
+    <p>별 점
+        <span>★</span>
+        <% for(var score_inx = 0; score_inx < tobacco_info.score-1; ++score_inx) {%>    
+            <span>★</span>
+        <% } %>
+    </p>
     <hr>
     <a href="/tobacco/update/<%= tobacco_info.tobacco_id %>">Update</a>
     <form action="/tobacco/delete/<%= tobacco_info.tobacco_id %>" method="POST">
-        <button type="submit">Delete</button>
+        <button type="submit" class="btn btn-light">Delete</button>
     </form>
+
+    <% if (session.login) {%>
+        <% if (is_favorite){ %>
+            <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/remove_favorite" method="post">
+                <button type="submit" class="btn btn-light">remove Favorite</button>
+            </form>
+        <%} else {%>
+            <form action="/tobacco/detail/<%=tobacco_info.tobacco_id%>/add_favorite" method="post">
+                <button type="submit" class="btn btn-light">Add Favorite</button>
+            </form>
+        <%}%>
+    <% } %>
 
     <hr>
     <h2>Review</h2>

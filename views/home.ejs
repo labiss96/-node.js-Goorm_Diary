@@ -4,23 +4,30 @@
 <body>
 <% include ./templates/header.ejs %>
     <div class = "container">
-        <p>Cigaretts list</p>
+        <p>New Favorite Goorm</p>
+        <hr>
+        <p>Best Goorm</p>
         <div class = "row">
             <% for(let tobacco of tobacco_list) { %>
             <div class = "col-md-2">
                 <div class="card bg-light mb-3" style="width: 11rem;">
                     <a href="/tobacco/detail/<%= tobacco.tobacco_id %>">
-                        <img src="./images/Marlboro_Logo.png" class="card-img-top" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
+                        <img src="images/<%= tobacco.brand %>.png" class="card-img-top" alt="" style='width:150px; height: 150px; display:block; margin:10px; text-align: center;'>
                     </a>
                     <div class="card-body">
                         <h5 class="card-title"><%= tobacco.brand %></h5>
                         <h6 class="card-subtitle mb-2 text-muted"><%= tobacco.name %></h6>
+                        
+                        <span>★</span>
+                        <% for(var score_inx = 0; score_inx < tobacco.score-1; ++score_inx) {%>    
+                            <span>★</span>
+                        <% } %>
                     </div>
                 </div>
             </div>    
             <% } %> 
         </div>
-        
+        <hr>        
     </div>
     
 </body>

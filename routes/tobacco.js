@@ -3,6 +3,7 @@ var router = express.Router();
 var {Tobacco} = require('../models');
 var {Review} = require('../models');
 var {User} = require('../models');
+
 router.get('/list', async(req, res)=> {
     var tobacco_list = await Tobacco.findAll();
     var brand_list = [];
@@ -23,11 +24,6 @@ router.get('/list', async(req, res)=> {
 
     res.render('./tobacco/list.ejs', {'tobacco_list':tobacco_list, 'brands':brands, "session":session}); 
 });
-
-// router.get('/list/:id', async(req, res)=> {
-    
-//     res.render('./tobacco/create.ejs', {'brands' : brands}); 
-// });
 
 //detail
 router.get('/detail/:id', async (req, res) => {
@@ -103,7 +99,6 @@ router.get('/detail/:id', async (req, res) => {
     //var review_info = await tobacco_info.getReviews();
 
     var review_info = review_list;
-
     for(var i = 0; i < review_info.length; i++) {
         var writer_info = await User.findOne({
             where : {id : review_info[i].dataValues.writer}
@@ -118,9 +113,36 @@ router.get('/detail/:id', async (req, res) => {
         };
         reviews.push(info);
     }
+
+    var is_favorite = false;
+
+    if(session.login) {
+        var user = await User.findOne({
+            where : {id : session.user_id}
+        }).catch(function (err) {
+            console.log(err);
+        });
+    
+        var favorite_tobacco = await user.getTobaccos().catch(function (err) {
+            console.log(err);
+        });
+    
+        
+        // console.log(favorite_tobacco);
+        console.log(favorite_tobacco);
+        
+        for(i = 0; i < favorite_tobacco.length; ++i) {
+            console.log("내가 좋아한 담배들 ?");
+            if(favorite_tobacco[i].dataValues.tobacco_id == tobacco_id) {
+                is_favorite = true;
+                break;
+            }
+        }
+        console.log(is_favorite);        
+    }
     
 
-    res.render('./tobacco/detail.ejs', {'tobacco_info': tobacco_info, 'reviews':reviews, "session":session});
+    res.render('./tobacco/detail.ejs', {'tobacco_info': tobacco_info, 'reviews':reviews, "session":session, "is_favorite":is_favorite});
 });
 
 //create
@@ -216,9 +238,9 @@ router.post("/detail/:id/create_review", async function(req, res){
     }).then(async function(review_info) {
         await Tobacco.findOne({
             where: {tobacco_id:tobacco_id}
-        }).then( async function(rest){
+        }).then( async function(ciga){
             console.log(review_info);
-            await rest.addReview(review_info)
+            await ciga.addReview(review_info)
         });
     }).catch(function(err){
         console.log(err);
@@ -226,5 +248,70 @@ router.post("/detail/:id/create_review", async function(req, res){
 
     res.redirect('/tobacco/detail/'+tobacco_id);
 });
+
+//좋아요
+router.post("/detail/:id/add_favorite", async function (req, res) {
+    var tobacco_id= req.params.id;
+    var session = req.session;
+
+    var user = await User.findOne({
+        where : {id : session.user_id}
+    }).catch(function (err) {
+        console.log(err);
+    });
+    var tobacco = await Tobacco.findOne({
+        where : {tobacco_id:tobacco_id}
+    }).catch(function(err) {
+        console.log(err);
+    });
+
+    await user.addTobacco(tobacco).catch(function(err){
+        console.log(err);
+    });
+
+    res.redirect('/tobacco/detail/'+tobacco_id);
+});
+
+//좋아요 삭제
+router.post("/detail/:id/remove_favorite", async function (req, res) {
+    var tobacco_id= req.params.id;
+    var session = req.session;
+
+    var user = await User.findOne({
+        where : {id : session.user_id}
+    }).catch(function (err) {
+        console.log(err);
+    });
+    var tobacco = await Tobacco.findOne({
+        where : {tobacco_id:tobacco_id}
+    }).catch(function(err) {
+        console.log(err);
+    });
+
+    await user.removeTobacco(tobacco).catch(function(err){
+        console.log(err);
+    });
+
+    res.redirect('/tobacco/detail/'+tobacco_id);
+});
+
+router.post("/search", async function (req, res) {
+    var session = req.session;
+    var search_key =  req.body.search_key;
+    var tobacco_list = await Tobacco.findAll().catch(function(err) {
+        console.log(err);
+    });
+    var found = false;
+    var result = [];
+    for(var i =0; i < tobacco_list.length; ++i) {
+        if(tobacco_list[i].name.toLowerCase().indexOf(search_key.toLowerCase()) != -1 || tobacco_list[i].brand.toLowerCase().indexOf(search_key.toLowerCase()) != -1) {
+            result.push(tobacco_list[i]);
+            found = true;
+        }
+    }
+
+    res.render('./tobacco/search_result.ejs', {"session":session, "result":result, "search_key":search_key, "found":found});
+});
+
 
 module.exports = router;

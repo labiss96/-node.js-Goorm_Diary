@@ -2,17 +2,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <% include ../templates/head.ejs %>
+<% include ../templates/head.ejs %>
 </head>
 <body>
-    <% include ../templates/header.ejs %>
-
+<% include ../templates/header.ejs %>
     <div class="container">
+        <br>
+        <h4>User Info</h4>
         <br>
         <p><%= user_info.username %></p>
         <p><%= user_info.email %></p>
-        
-    <details>
+        <hr>
+
+        <h4>My favorite Goorm</h4>
+        <br>
+        <div class = "row">
+            <% for(var favo of favorite_list) { %>
+            <div class = "col-md-2">
+                <div class="card bg-light mb-3" style="width: 11rem;">
+                    <a href="/tobacco/detail/<%= favo.tobacco_id %>">
+                        <img src="/images/<%= favo.brand%>.png" class="card-img-top" alt="" style='width:150px; height: 150px; display:block; margin:10px; text-align: center;'>
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= favo.brand %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= favo.name %></h6>
+                    </div>
+                </div>
+            </div>    
+            <% } %> 
+        </div>
+        <hr>
+        <p>My reviews</p>
+        <div class = "row">
+            <% for (review of my_reviews) {%>
+                <div class = "col-md-2">
+                    <p>
+                        <%= review.feel_of_hit %>
+                        <%= review.score %>
+                    </p>
+                </div>
+            <% } %>
+        </div>
+
+
+    <!-- <details>
         <summary>Add my favorite</summary>
         <form action="">
             <div>
@@ -23,10 +56,9 @@
                     <%}%>
                 </select>
             </div>
-            
             <button type="submit">Add</button>
         </form>
-    </details>
+    </details> -->
 
     </div>    
 

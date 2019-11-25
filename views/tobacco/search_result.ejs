@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<% include ../templates/head.ejs %>
+</head>
+<body>
+<% include ../templates/header.ejs %>
+<div class="container">
+    <br>
+    <% if(found) { %>
+    <h4>"<%= search_key %>" 에 대한 검색 결과입니다.</h4>
+    <hr>
+
+    <div class = "row">
+        <% for(var li of result ) { %>
+            <div class = "col-md-2">
+                <div class="card bg-light mb-3" style="width: 11rem;">
+                    <a href="/tobacco/detail/<%= li.tobacco_id %>">
+                        <img src="../images/<%= li.brand%>.png" class="card-img-top" alt="" style='width:150px; display:block; margin:10px; text-align: center;'>
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= li.brand %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= li.name %></h6>
+                    </div>
+                </div>
+            </div>
+        <% } %>                    
+    </div>
+    <% } else { %>
+        <h4>"<%= search_key %>" 에 관련된 구름은 존재하지 않습니다.</h4>
+    <% } %>
+    
+</div>
+</body>
+</html>

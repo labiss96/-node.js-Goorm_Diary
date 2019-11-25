@@ -26,6 +26,8 @@ app.use(session({
 app.use('/', require('./routes/home'));
 app.use('/tobacco', require('./routes/tobacco'));
 app.use('/accounts', require('./routes/accounts'));
+app.use('/public/images', express.static('/images'));
+
 
 //port 설정.
 app.listen(3000, () => {

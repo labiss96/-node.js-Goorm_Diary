@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var {User} = require('../models');
 var {Tobacco} = require('../models');
+var {Review} = require('../models');
+
 router.get('/login', (req, res) => {
     let session = req.session;
     res.render('./accounts/login.ejs', {"session":session});
@@ -73,7 +75,18 @@ router.get('/mypage/:username', async (req, res) => {
         console.log(err);
     });
 
-    res.render("./accounts/mypage", {"user_info" : user_info, "session" : session, "tobacco_list":tobacco_list });
+    var favorite_list = await user_info.getTobaccos().catch(function(err){
+        console.log(err);
+    });
+
+    var my_reviews = await Review.findAll({
+        where : { writer : user_info.id }
+    }).catch(function(err){
+        console.log(err);
+    });
+
+
+    res.render("./accounts/mypage", {"user_info" : user_info, "session" : session, "tobacco_list":tobacco_list, "favorite_list":favorite_list, "my_reviews":my_reviews });
 });
 
 router.post("/logout",  function(req,res){
