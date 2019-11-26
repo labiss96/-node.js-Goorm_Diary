@@ -4,7 +4,9 @@
 <body>
     <% include ../templates/header.ejs %>
     <div class="container">
-        <p>담배 제품 추가</p>
+      <br>
+      <h4>구름과자 추가</h4>
+        <hr>
         <form action="/tobacco/create" method="POST">
             <div>
                 <label for="brand">brand</label>
@@ -38,8 +40,8 @@
                 <input type="radio" name="is_menthol" value=true /> 유
                 <input type="radio" name="is_menthol" value=false /> 무
               </div>
-              <div>
-                <button type="submit">Submit</button>
+              <div><br>
+                <button type="submit" class="btn btn-secondary" >추가</button>
               </div>
         </form>
     </div>

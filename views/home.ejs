@@ -4,9 +4,9 @@
 <body>
 <% include ./templates/header.ejs %>
     <div class = "container">
-        <p>New Favorite Goorm</p>
-        <hr>
-        <p>Best Goorm</p>
+        <br>
+        <h4>Best Goorm</h4>
+        <br>
         <div class = "row">
             <% for(let tobacco of tobacco_list) { %>
             <div class = "col-md-2">
@@ -27,8 +27,22 @@
             </div>    
             <% } %> 
         </div>
-        <hr>        
+        <hr>
+        
+        <h4>Brand List</h4>
+        <div class ="row">
+            <% for(let brand of brand_list) { %>
+                <div class="card bg-grey text-white" style="width: 10rem; margin: 1em;">
+                    <img src="images/<%= brand.brand %>.png" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title text-black"><%= brand.brand %></h5>
+                        <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text">Last updated 3 mins ago</p> -->
+                    </div>
+                </div>
+            <% } %>
+        </div>
     </div>
-    
+<% include ./templates/footer.ejs %>
 </body>
 </html>

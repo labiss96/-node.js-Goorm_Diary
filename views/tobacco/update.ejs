@@ -4,7 +4,9 @@
 <body>
     <% include ../templates/header.ejs %>
     <div class="container">
-        <p>구름정보 수정</p>
+      <br>
+        <h4>구름정보 수정</h4>
+        <hr>
         <form action="/tobacco/update/<%= tobacco_info.tobacco_id %>" method="POST">
             <div>
                 <label for="brand">brand</label>
@@ -37,7 +39,8 @@
                 <% } %>
               </div>
               <div>
-                <button type="submit">Submit</button>
+                <br>
+                <button type="submit" class="btn btn-secondary">수정</button>
               </div>
         </form>
     </div>
